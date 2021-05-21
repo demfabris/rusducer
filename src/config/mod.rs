@@ -8,21 +8,26 @@ use parse::parse_yaml_config;
 use utils::default_config_xdg_dir;
 
 #[derive(Deserialize, Debug)]
-pub struct Action {
-    id: Option<String>,
-    description: Option<String>,
-    files: Option<Vec<String>>,
-    destination: Option<Vec<String>>,
-    replace: Option<bool>,
-    command: Option<String>,
-    side_effect: Option<String>,
+pub struct Configuration {
+    pub actions: Option<Vec<Action>>,
 }
 
-pub struct Configuration {
-    actions: Vec<Action>,
+#[derive(Deserialize, Debug)]
+pub struct Action {
+    pub action: Option<String>,
+    pub description: Option<String>,
+    pub files: Option<Vec<String>>,
+    pub destination: Option<String>,
+    pub replace: Option<bool>,
+    pub command: Option<String>,
+    pub side_effect: Option<String>,
 }
 
 impl Configuration {
+    pub fn with_none() -> Self {
+        Self { actions: None }
+    }
+
     pub fn from_file() -> Configuration {
         todo!()
     }
@@ -41,17 +46,4 @@ impl Default for Configuration {
 
 const DEFAULT_CONFIG: &str = r#"
 ---
-- action:
-    id: MOVE_MY_FILES
-    description: Put files from place A to place B
-    files:
-      - "~/file"
-      - "~/another_file"
-    move:
-      destination:
-        - "~/Documents"
-        - "~/Pictures"
-      replace: true
-    command: "sh -c custom_script.sh"
-    side_effect: "..."
 "#;

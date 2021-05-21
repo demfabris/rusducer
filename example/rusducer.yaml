@@ -1,14 +1,21 @@
 ---
-- action:
-    id: MOVE_MY_FILES
-    description: Put files from place A to place B
-    files:
+actions:
+  - action: "MOVE_MY_FILES"
+    description: "Put files from place A to place B"
+    origin:
       - "~/file"
       - "~/another_file"
-    move:
-      destination:
-        - "~/Documents"
-        - "~/Pictures"
-      replace: true
+    destination: "~/Documents"
+    replace: true
+    command: "sh -c custom_script.sh"
+    side_effect: "..."
+
+  - action: "MOVE_MY_FILES"
+    description: "Put files from place A to place B"
+    origin:
+      - "~/file"
+      - "~/another_file"
+    destination: "~/Documents"
+    replace: true
     command: "sh -c custom_script.sh"
     side_effect: "..."
