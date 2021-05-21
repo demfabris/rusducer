@@ -4,11 +4,8 @@ use std::path::PathBuf;
 
 use crate::config::Configuration;
 
-pub fn parse_yaml_config(path: &PathBuf) {
+pub fn parse_yaml_config(path: &PathBuf) -> Result<Configuration, Error> {
     let buffer = read(path).expect("Couldn't read file");
 
-    let yaml: Result<Configuration, Error> = from_slice(&buffer);
-    println!("{:?}", yaml.unwrap());
-
-    todo!();
+    from_slice(&buffer)
 }

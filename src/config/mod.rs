@@ -1,5 +1,5 @@
 use serde_derive::Deserialize;
-use std::ffi::OsString;
+use std::{ffi::OsString, path::PathBuf};
 
 mod parse;
 mod utils;
@@ -28,22 +28,17 @@ impl Configuration {
         Self { actions: None }
     }
 
-    pub fn from_file() -> Configuration {
-        todo!()
+    pub fn from_file(path_str: &str) -> Self {
+        let path: PathBuf = path_str.into();
+        parse_yaml_config(&path).expect("Couldn't read custom config file")
     }
 }
 
 impl Default for Configuration {
     fn default() -> Self {
         match default_config_xdg_dir() {
-            Some(path) => parse_yaml_config(&path),
-            _ => (),
+            Some(path) => parse_yaml_config(&path).expect("Couldn't read config file"),
+            _ => Self::with_none(),
         }
-
-        todo!()
     }
 }
-
-const DEFAULT_CONFIG: &str = r#"
----
-"#;

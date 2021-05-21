@@ -12,9 +12,11 @@ use app::Runtime;
 
 fn main() {
     let matches = Runtime.build().get_matches();
-    let conf = Configuration::default();
 
-    println!("{:?}", matches);
+    let config = match matches.value_of("config") {
+        Some(path) => Configuration::from_file(&path),
+        None => Configuration::default(),
+    };
 
-    todo!()
+    println!("{:?}", config);
 }
