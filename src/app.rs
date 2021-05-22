@@ -28,5 +28,19 @@ impl Runtime {
                     .value_name("CONFIG")
                     .takes_value(true),
             )
+            .arg(
+                Arg::with_name("delay")
+                    .short("d")
+                    .long("delay")
+                    .help("Wait for x seconds before dispatching")
+                    .value_name("DELAY")
+                    .takes_value(true),
+            )
+            .arg(
+                Arg::with_name("list")
+                    .short("l")
+                    .long("list")
+                    .help("List stored actions"),
+            )
     }
 }
