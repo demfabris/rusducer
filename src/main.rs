@@ -8,10 +8,10 @@ mod app;
 mod config;
 
 use crate::config::Configuration;
-use app::Runtime;
+use app::Application;
 
 fn main() {
-    let matches = Runtime.build().get_matches();
+    let matches = Application.build().get_matches();
 
     let config = match matches.value_of("config") {
         Some(path) => Configuration::from_file(&path),

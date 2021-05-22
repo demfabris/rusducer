@@ -1,8 +1,8 @@
 use clap::{App, Arg};
 
-pub struct Runtime;
+pub struct Application;
 
-impl Runtime {
+impl Application {
     pub fn build(&self) -> App<'static, 'static> {
         App::new("Rusducer")
             .version("0.1.0")
