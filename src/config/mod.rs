@@ -1,5 +1,5 @@
 use serde_derive::Deserialize;
-use std::{ffi::OsString, path::PathBuf};
+use std::path::PathBuf;
 
 mod parse;
 mod utils;
@@ -9,11 +9,11 @@ use utils::default_config_xdg_dir;
 
 #[derive(Deserialize, Debug)]
 pub struct Configuration {
-    pub actions: Option<Vec<Action>>,
+    pub actions: Option<Vec<ActionSpec>>,
 }
 
 #[derive(Deserialize, Debug)]
-pub struct Action {
+pub struct ActionSpec {
     pub action: Option<String>,
     pub description: Option<String>,
     pub files: Option<Vec<String>>,

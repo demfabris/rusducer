@@ -25,7 +25,7 @@ impl Application {
                     .short("c")
                     .long("config")
                     .help("Provide custom config file")
-                    .value_name("CONFIG")
+                    .value_name("CONFIG_FILE_PATH")
                     .takes_value(true),
             )
             .arg(

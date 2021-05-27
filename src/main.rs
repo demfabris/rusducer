@@ -4,11 +4,15 @@ extern crate serde_derive;
 extern crate serde_yaml;
 extern crate xdg;
 
+mod action;
 mod app;
 mod config;
+mod core;
+mod worker;
 
-use crate::config::Configuration;
+use crate::core::Core;
 use app::Application;
+use config::Configuration;
 
 fn main() {
     let matches = Application.build().get_matches();
@@ -18,5 +22,7 @@ fn main() {
         None => Configuration::default(),
     };
 
-    println!("{:?}", config);
+    println!("{:?}", matches);
+
+    Core::new().from_config(config).with_flags(&matches).run();
 }
