@@ -8,6 +8,7 @@ mod action;
 mod app;
 mod config;
 mod core;
+mod errors;
 mod worker;
 
 use crate::core::Core;
