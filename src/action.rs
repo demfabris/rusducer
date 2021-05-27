@@ -1,4 +1,4 @@
-use std::ffi::OsString;
+use std::{ffi::OsString, fs::metadata, path::Path};
 
 enum Kind {
     Move,
@@ -20,8 +20,20 @@ impl Dispatchable for Action {
     fn dispatch(&self) {
         match self.kind {
             Kind::Move => todo!(),
-            Kind::Copy => todo!(),
+            Kind::Copy => {}
             Kind::Delete => todo!(),
         }
     }
+}
+
+fn try_execute<O: AsRef<Path>, D: AsRef<Path>>(
+    origin: O,
+    destination: D,
+    replace: bool,
+) -> Result<_, _> {
+    if !replace {
+        metadata(destination)?;
+    }
+
+    todo!()
 }
