@@ -1,4 +1,5 @@
 extern crate clap;
+extern crate fs_extra;
 extern crate serde;
 extern crate serde_derive;
 extern crate serde_yaml;

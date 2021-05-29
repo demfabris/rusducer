@@ -1,9 +1,5 @@
 use crate::errors::DispatchError;
-use std::{
-    ffi::OsString,
-    fs::{copy, metadata},
-    path::Path,
-};
+use std::ffi::OsString;
 
 enum Kind {
     Move,
@@ -15,37 +11,31 @@ pub struct Action {
     files: Vec<OsString>,
     destination: OsString,
     kind: Kind,
+    replace: bool,
 }
 
 pub trait Dispatchable {
-    fn dispatch(&self);
+    fn dispatch(&self) -> Result<u64, DispatchError<OsString>>;
 }
 
 impl Dispatchable for Action {
-    fn dispatch(&self) {
+    fn dispatch(&self) -> Result<u64, DispatchError<OsString>> {
         match self.kind {
-            Kind::Move => todo!(),
+            Kind::Move => {
+                let mut options = fs_extra::file::CopyOptions::new();
+                options.overwrite = self.replace;
+
+                for file in &self.files {
+                    match fs_extra::file::move_file(file, &self.destination, &options) {
+                        Ok(size) => println!("Moved {}", size),
+                        Err(error) => println!("Failed {}", error),
+                    }
+                }
+
+                Ok(0)
+            }
             Kind::Copy => todo!(),
             Kind::Delete => todo!(),
-        }
-    }
-}
-
-fn try_execute<P>(origin: P, destination: P, replace: bool) -> Result<(), DispatchError<P>>
-where
-    P: AsRef<Path> + Copy,
-{
-    let destination_exists = metadata(destination).is_ok();
-    let origin_exists = metadata(origin).is_ok();
-
-    if !replace && destination_exists {
-        Err(DispatchError::OverwriteError(destination))
-    } else if !origin_exists {
-        Err(DispatchError::FileDoesNotExistsError(origin))
-    } else {
-        match copy(origin, destination) {
-            Err(_) => Err(DispatchError::FsPermissionError(origin, destination)),
-            _ => Ok(()),
         }
     }
 }
