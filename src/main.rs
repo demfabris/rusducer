@@ -9,7 +9,6 @@ mod action;
 mod app;
 mod config;
 mod core;
-mod errors;
 mod worker;
 
 use crate::core::Core;
@@ -24,7 +23,8 @@ fn main() {
         None => Configuration::default(),
     };
 
-    println!("{:?}", matches);
+    // println!("{:?}", matches);
+    println!("{:?}", config);
 
     Core::new().from_config(config).with_flags(&matches).run();
 }

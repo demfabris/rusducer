@@ -54,7 +54,10 @@ impl<'r> Core<'r> {
             }
         }
 
-        println!("hi");
+        if let Some(config) = &self.config {
+            todo!()
+        }
+
         todo!()
     }
 }
