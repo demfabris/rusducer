@@ -16,4 +16,8 @@ impl Worker {
             actions: None,
         }
     }
+
+    pub fn try_dispatch(&self) {
+        todo!()
+    }
 }

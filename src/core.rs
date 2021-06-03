@@ -1,3 +1,4 @@
+use crate::action::Action;
 use crate::config::Configuration;
 use crate::worker::Worker;
 use clap::ArgMatches;
@@ -55,9 +56,21 @@ impl<'r> Core<'r> {
         }
 
         if let Some(config) = &self.config {
-            todo!()
+            if let Some(actions) = &config.actions {
+                let mut parsed_actions: Vec<Action> = Vec::new();
+
+                for action in actions {
+                    parsed_actions.push(action.into());
+                }
+
+                worker.actions = Some(parsed_actions);
+            } else {
+                println!("No action found");
+            }
+        } else {
+            println!("No config file found");
         }
 
-        todo!()
+        worker.try_dispatch();
     }
 }
