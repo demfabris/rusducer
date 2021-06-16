@@ -1,4 +1,5 @@
 extern crate clap;
+extern crate colour;
 extern crate fs_extra;
 extern crate nanoid;
 extern crate serde;
@@ -25,7 +26,7 @@ fn main() {
     };
 
     // println!("{:?}", matches);
-    println!("{:?}", config);
+    // println!("{:?}", config);
 
     Core::new().from_config(config).with_flags(&matches).run();
 }

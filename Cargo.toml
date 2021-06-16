@@ -8,6 +8,7 @@ edition = "2018"
 
 [dependencies]
 clap = "2.33.3"
+colour = "0.6.0"
 fs_extra = "1.2.0"
 nanoid = "0.4.0"
 serde = "1.0.126"

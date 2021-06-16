@@ -1,12 +1,13 @@
 use crate::config::ActionSpec;
-use nanoid::nanoid;
 
+#[derive(Clone)]
 pub enum Kind {
     Move,
     Copy,
     Undefined(String),
 }
 
+#[derive(Clone)]
 pub struct Action {
     id: String,
     description: String,
@@ -36,14 +37,20 @@ impl Dispatchable for Action {
     }
 }
 
+impl std::fmt::Display for Action {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "  {}\n  - {}", self.id, self.description)
+    }
+}
+
 impl From<&ActionSpec> for Action {
     fn from(spec: &ActionSpec) -> Self {
         Self {
-            id: spec.action.clone().unwrap_or(nanoid!()),
-            description: spec.description.unwrap_or(String::from("")),
-            files: spec.files.unwrap_or(Vec::new()),
-            destination: spec.destination.unwrap_or(String::from("")),
-            kind: match spec.action {
+            id: spec.action.clone().unwrap_or(nanoid::nanoid!()),
+            description: spec.description.clone().unwrap_or(String::from("")),
+            files: spec.files.clone().unwrap_or(Vec::new()),
+            destination: spec.destination.clone().unwrap_or(String::from("")),
+            kind: match spec.action.clone() {
                 Some(name) if name.contains("COPY") => Kind::Copy,
                 Some(name) if name.contains("MOVE") => Kind::Move,
                 Some(name) => Kind::Undefined(name),

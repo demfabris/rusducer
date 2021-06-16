@@ -35,13 +35,25 @@ impl<'r> Core<'r> {
     pub fn run(&self) {
         let mut worker = Worker::new();
 
+        if let Some(config) = &self.config {
+            worker.with_actions(config.actions.as_ref());
+        } else {
+            panic!("No config file found");
+        }
+
         if let Some(flags) = self.flags {
             if flags.is_present("version") {
-                println!("v0.1.0");
+                println!("Rusducer v0.1.0");
                 worker.dry = true;
             }
 
             if flags.is_present("list") {
+                if let Some(actions) = &worker.actions {
+                    colour::blue_ln!("Loaded actions:\n");
+                    for action in actions {
+                        colour::green_ln!("{}\n", action);
+                    }
+                }
                 worker.dry = true;
             }
 
@@ -55,22 +67,9 @@ impl<'r> Core<'r> {
             }
         }
 
-        if let Some(config) = &self.config {
-            if let Some(actions) = &config.actions {
-                let mut parsed_actions: Vec<Action> = Vec::new();
-
-                for action in actions {
-                    parsed_actions.push(action.into());
-                }
-
-                worker.actions = Some(parsed_actions);
-            } else {
-                println!("No action found");
-            }
-        } else {
-            println!("No config file found");
+        match worker.try_dispatch() {
+            Ok(n) => println!("{}", n),
+            Err(e) => println!("{}", e),
         }
-
-        worker.try_dispatch();
     }
 }
